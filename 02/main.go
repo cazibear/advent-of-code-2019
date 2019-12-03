@@ -15,11 +15,14 @@ func check(e error) {
 }
 
 func printIntcode(data []int) {
+	// prints the opcode in fours
 	for i := 0; i < len(data); i++ {
-		if i == len(data)-1 {
-			fmt.Printf("%d\n", data[i])
+		if i%4 == 3 {
+			fmt.Printf("%7v\n", data[i])
+		} else if i == len(data)-1 {
+			fmt.Printf("%7v\n", data[i])
 		} else {
-			fmt.Printf("%d,", data[i])
+			fmt.Printf("%7v, ", data[i])
 		}
 	}
 }
@@ -54,7 +57,7 @@ func main() {
 
 		intcode = append(intcode, number)
 	}
-	fmt.Printf("Intcode before: ")
+	fmt.Println("Intcode before: ")
 	printIntcode(intcode)
 
 	// restoring to the "1202 program alarm" state
@@ -80,6 +83,6 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Intcode after: ")
+	fmt.Println("Intcode after: ")
 	printIntcode(intcode)
 }
