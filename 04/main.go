@@ -21,16 +21,30 @@ func checkPassword(password int) bool {
 	return check
 }
 
-func main() {
-	var passwords int
-	inputMin := 236491
-	inputMax := 713787
+// check the amount of passwords in a range
+func checkPasswords(min, max int, c chan int) {
+	var amount int
 
-	for i := inputMin; i <= inputMax; i++ {
+	for i := min; i <= max; i++ {
 		if checkPassword(i) {
-			passwords++
+			amount++
 		}
 	}
 
-	fmt.Println(passwords)
+	c <- amount
+}
+
+func main() {
+	var amount int
+	inputMin := 236491
+	inputMax := 713787
+	c := make(chan int)
+
+	// parallel version
+	amount = 0
+	go checkPasswords(inputMin, inputMax/2, c)
+	go checkPasswords(inputMax/2, inputMax, c)
+	amount += <-c
+	amount += <-c
+	fmt.Println(amount)
 }
